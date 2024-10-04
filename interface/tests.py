@@ -11,17 +11,17 @@ class Tests:
         tests = self.service.get_all()
         for i in range(len(tests)):
             print(f'{i + 1}. {tests[i]}')
-        choise = input()
-        return tests[int(choise) - 1]
+        choice = input()
+        return tests[int(choice) - 1]
 
     def run_test(self, raw_test: Test):
         test = self.service.collect_test(raw_test)
         print(test.title + "\n")
-        user_choises = {}
+        user_choices = {}
         for question in test.questions:
             print("== " + str(question) + " ==")
             for i in range(len(question.answers)):
                 print(f"{i + 1}. {question.answers[i]}")
-            choise = int(input())
-            user_choises[question.id] = question.answers[choise - 1].id
-        return user_choises
+            choice = int(input())
+            user_choices[question.id] = question.answers[choice - 1].id
+        return user_choices

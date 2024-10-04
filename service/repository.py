@@ -8,7 +8,7 @@ class BaseRepository:
 
 
 class TestsRepository(BaseRepository):
-    def get_tests(self):
+    def get_all_tests(self):
         cursor = self.storage.connection.cursor()
         query = f"SELECT * FROM Tests;"
         cursor.execute(query)

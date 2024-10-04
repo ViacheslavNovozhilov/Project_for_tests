@@ -17,8 +17,10 @@ class Migrator:
         self.storage.connection.execute("""
         CREATE TABLE IF NOT EXISTS CorrectAnswers (
         CorrectAnswerId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        AnswerId INTEGER NOT NULL UNIQUE,
-        FOREIGN KEY (AnswerId) REFERENCES Answers(AnswerId)
+        AnswerId INTEGER NOT NULL,
+        QuestionId INTEGER NOT NULL,
+        FOREIGN KEY (AnswerId) REFERENCES Answers(AnswerId),
+        FOREIGN KEY (QuestionId) REFERENCES Questions(QuestionId)
         )
         """)
 
