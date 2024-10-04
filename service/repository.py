@@ -15,7 +15,7 @@ class TestsRepository(BaseRepository):
         rows = cursor.fetchall()
         tests = []
         for row in rows:
-            test = Test(row[1], row[2], row[3])
+            test = Test(row[1], row[2])
             tests.append(test)
         return tests
 
@@ -47,7 +47,7 @@ class TestsRepository(BaseRepository):
     def get_admins(self, data: list | tuple, admin_user_id: int):
         pass
 
-    def get_full_test(self, test_id: int):
+    def get_all_test_info(self, test_id: int):
         cursor = self.storage.connection.cursor()
         query = f"""
             SELECT * FROM Tests
@@ -79,7 +79,7 @@ class UsersRepository(BaseRepository):
         rows = cursor.fetchone()
         return rows
 
-    def get_by_username(self, username: str):
+    def get_username(self, username: str):
         cursor = self.storage.connection.cursor()
         query = f"SELECT * FROM Users WHERE Username = '{username}';"
         cursor.execute(query)

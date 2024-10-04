@@ -8,7 +8,7 @@ class AuthService:
         self.repository = repository
 
     def login(self, username: str, password: str) -> User:
-        user = self.repository.get_by_username(username)
+        user = self.repository.get_username(username)
         if not user:
             raise UserNotFound(username)
         if user.password != password:

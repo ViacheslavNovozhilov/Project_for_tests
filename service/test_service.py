@@ -10,4 +10,4 @@ class TestsService:
         return self.repository.get_tests()
 
     def collect_test(self, test: Test):
-        return self.repository.get_full_test(test.id)
+        return self.repository.get_all_test_info(test.id)
