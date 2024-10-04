@@ -18,6 +18,19 @@ class TestsRepository(BaseRepository):
             test = Test(row[1], row[2])
             tests.append(test)
         return tests
+    
+    def get_emty_test(self, test_id: int) -> Test:
+        """
+        Метод для получения теста без доп информации. Только id, категорию и название
+        Используется в других методах репозитория
+        """
+        cursor = self.storage.connection.cursor()
+        query = "SELECT * from Tests WHERE TestId=" + str(test_id)
+        cursor.execute(query)
+        row = cursor.fetchone()
+        return Test(row[1], row[2], row[0])
+
+
 
     def get_all_question(self):
         cursor = self.storage.connection.cursor()
@@ -49,26 +62,36 @@ class TestsRepository(BaseRepository):
 
     def get_all_test_info(self, test_id: int):
         cursor = self.storage.connection.cursor()
-        query = f"""
-            SELECT * FROM Tests
-            JOIN questions ON tests.id = questions.tests_id
-            JOIN answers ON answers.question = questions.id
-            WHERE tests.id = {test_id}
-            order by questions.id;
+        emty_test = self.get_emty_test(test_id)
+        questions_query = """
+        select q.*, ca.AnswerId
+        from TestsAndQuestions as j
+        join Questions as q 
+        on j.QuestionId = q.QuestionId
+        join CorrectAnswers as ca           # код для примера
+        on ca.QuestionId = q.QuestionId     #
+        WHERE j.TestId=
+        """+str(test_id)
+        cursor.execute(questions_query)
+        raw_questions = cursor.fetchall()
+        for row in raw_questions:
+            emty_test.questions.append(Question(row[1], row[0]))
+
+        answers_query = """
+        select a.*
+        from QuestionsAndAnswers as qa
+        join Answers as a
+        on qa.AnswerId = a.AnswerId
+        WHERE qa.QuestionId=
         """
-        cursor.execute(query)
-        raw_data = cursor.fetchall()
+        for question in emty_test.questions:
+            cursor.execute(answers_query+str(question.question_id))
+            raw_answers = cursor.fetchall()
+            for row in raw_answers:
+                question.answers.append(Answer(row[1], row[0]))
+        
+        return emty_test
 
-        test = Test(test_id=raw_data[0][0], title=raw_data[0][1], category=raw_data[0][3])
-        test.questions = []
-        for row in raw_data:
-            question_id = row[4]
-            if len(test.questions) == 0 or question_id != test.questions[-1].question_id:
-                question = Question(text=row[5])
-                question.answers = self.get_all_answer(raw_data, question.question_id)
-                test.questions.append(question)
-
-        return test
 
 
 class UsersRepository(BaseRepository):

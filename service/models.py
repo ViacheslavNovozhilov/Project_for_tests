@@ -8,10 +8,14 @@ class Answer:
 
 
 class Question:
+    answers: list[Answer]
+    correct_answer_id: int
 
-    def __init__(self, text: str, question_id: int | None = None):
+    def __init__(self, text: str, question_id: int | None = None, correct_answer_id = None):
         self.question_id = question_id
         self.text = text
+        self.correct_answer_id = correct_answer_id
+        self.answers = []
 
     def __str__(self):
         return self.text
@@ -21,6 +25,7 @@ class Test:
     id: int | None = None
     title: str
     category: str
+    questions: list[Question]
 
     def __str__(self):
         return self.title
@@ -29,6 +34,7 @@ class Test:
         self.title = title
         self.category = category
         self.id = test_id
+        self.questions = []
 
 
 class User:
