@@ -18,10 +18,11 @@ def main():
     testsInterface = Tests(testsService)
 
     while True:
-        user = authInterface.login_form()
+        user = authInterface.user_choice()
         if user is None:
             continue
         test = testsInterface.choose_test()
+        print(test.id)
         choises = testsInterface.run_test(test)
 
 

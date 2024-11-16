@@ -38,8 +38,9 @@ class User:
 
 
 class Admin:
-    admin_user_id: int | None = None
-    user_id: int
+    def __init__(self, admin_user_id, user_id):
+        self.user_id = user_id
+        self.admin_user_id = admin_user_id
 
 
 class CorrectAnswer:

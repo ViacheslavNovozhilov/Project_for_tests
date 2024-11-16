@@ -1,5 +1,6 @@
 from storage.sqlite_storage import SqliteStorage
-from service.models import Test, Question, Answer, User
+from service.models import Test, Question, Answer, User, Admin
+
 
 
 class BaseRepository:
@@ -9,13 +10,13 @@ class BaseRepository:
 
 class TestsRepository(BaseRepository):
     def get_all_tests(self):
-        cursor = self.storage.connection.cursor()
+        cursor = self.storage.connection.cursor() # при создании репозитория даем подключения к базе
         query = f"SELECT * FROM Tests;"
         cursor.execute(query)
         rows = cursor.fetchall()
         tests = []
         for row in rows:
-            test = Test(row[1], row[2])
+            test = Test(row[1], row[2], row[0])
             tests.append(test)
         return tests
 
@@ -51,15 +52,15 @@ class TestsRepository(BaseRepository):
         cursor = self.storage.connection.cursor()
         query = f"""
             SELECT * FROM Tests
-            JOIN questions ON tests.id = questions.tests_id
-            JOIN answers ON answers.question = questions.id
-            WHERE tests.id = {test_id}
-            order by questions.id;
+            JOIN Questions ON Tests.TestId = Questions.TestId
+            JOIN Answers ON Answers.Question = Questions.QuestionId
+            WHERE Tests.TestId = {test_id}
+            order by Questions.QuestionId;
         """
         cursor.execute(query)
         raw_data = cursor.fetchall()
 
-        test = Test(test_id=raw_data[0][0], title=raw_data[0][1], category=raw_data[0][3])
+        test = Test(test_id=raw_data[0][0], title=raw_data[0][2], category=raw_data[0][3])
         test.questions = []
         for row in raw_data:
             question_id = row[4]
@@ -91,3 +92,14 @@ class UsersRepository(BaseRepository):
         user.username = rows[1]
         user.password = rows[2]
         return user
+
+    def get_admins(self):
+        cursor = self.storage.connection.cursor()
+        query = f"SELECT * FROM Admins JOIN Users ON Users.UserId = Admins.UserId;"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        admins = []
+        for row in rows:
+            admin = Admin(row[0], row[1])
+            admins.append(admin)
+        return admins
