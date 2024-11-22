@@ -31,7 +31,7 @@ class TestsRepository(BaseRepository):
             questions.append(question)
         return questions
 
-    def get_all_answer(self, data: list | tuple, question_id: int):
+    def get_all_answer(self):
         cursor = self.storage.connection.cursor()
         query = f"SELECT * FROM Answers;"
         cursor.execute(query)
@@ -42,33 +42,61 @@ class TestsRepository(BaseRepository):
             answers.append(answer)
         return answers
 
-    def get_correct_answer(self, data: list | tuple, correct_answer_id: int):
-        pass
+    def get_correct_answer(self):
+        cursor = self.storage.connection.cursor()
+        correct_answer_query = f"""
+        SELECT a.Value, a.AnswerId 
+        FROM Answers as a 
+        JOIN CorrectAnswers as ca ON a.AnswerId = ca.AnswerId
+        JOIN Questions as q ON ca.QuestionId = q.QuestionId
+        """
+        cursor.execute(correct_answer_query)
+        rows = cursor.fetchall()
 
-    def get_admins(self, data: list | tuple, admin_user_id: int):
-        pass
+        correct_answers = []
+        for row in rows:
+            answer = Answer(row[1], row[0])
+            correct_answers.append(answer.answer_id)
+        print(correct_answers)
+        return correct_answers
 
     def get_all_test_info(self, test_id: int):
         cursor = self.storage.connection.cursor()
-        query = f"""
+        test_query = f"""
             SELECT * FROM Tests
-            JOIN Questions ON Tests.TestId = Questions.TestId
-            JOIN Answers ON Answers.Question = Questions.QuestionId
-            WHERE Tests.TestId = {test_id}
-            order by Questions.QuestionId;
+            WHERE Tests.TestId = {test_id};
         """
-        cursor.execute(query)
-        raw_data = cursor.fetchall()
+        cursor.execute(test_query)
+        raw_data = cursor.fetchone()
 
-        test = Test(test_id=raw_data[0][0], title=raw_data[0][2], category=raw_data[0][3])
+        test = Test(test_id=raw_data[0], title=raw_data[1], category=raw_data[2])
         test.questions = []
-        for row in raw_data:
-            question_id = row[4]
-            if len(test.questions) == 0 or question_id != test.questions[-1].question_id:
-                question = Question(text=row[5])
-                question.answers = self.get_all_answer(raw_data, question.question_id)
-                test.questions.append(question)
 
+        questions_query = f"""
+        select q.QuestionId, q.Text
+        from TestsAndQuestions as tq
+        join Questions as q on q.QuestionId = tq.QuestionId
+        where tq.TestId = {test_id};
+        """
+
+        cursor.execute(questions_query)
+        questions_data = cursor.fetchall()
+        for question in questions_data:
+            test.questions.append(Question(question[1], question[0]))
+
+        answers_query = """
+        select a.AnswerId, a.Value
+        from QuestionsAndAnswers as qa
+        join Answers as a on a.AnswerId = qa.AnswerId
+        where qa.QuestionId=
+        """
+
+        for question in test.questions:
+            raw_answers = cursor.execute(answers_query + str(question.question_id)).fetchall()
+            question.answers = []
+            for answer in raw_answers:
+                answer = Answer(answer[1], answer[0])
+                question.answers.append(answer)
         return test
 
 

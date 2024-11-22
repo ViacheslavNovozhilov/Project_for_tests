@@ -22,17 +22,4 @@ class Login:
         except InvalidPassword as e:
             print("неверный пароль!")
             return
-
-        print(f"""Если вы хотите просмотреть свои результаты, нажмите 1,
-Если вы хотите заново пройти тест, нажмите 2,
-Если вы хотите изменить данные, то нажмите 3 (потребуется пароль администратора!)
-""")
-        user_input = int(input("Введите цифру: "))
-        if user_input == 1:
-            pass
-        elif user_input == 2:
-            pass
-        elif user_input == 3:
-            pass
-
         return user
