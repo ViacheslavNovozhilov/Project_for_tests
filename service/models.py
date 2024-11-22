@@ -18,9 +18,6 @@ class Question:
 
 
 class Test:
-    id: int | None = None
-    title: str
-    category: str
 
     def __str__(self):
         return self.title
@@ -28,7 +25,7 @@ class Test:
     def __init__(self, title: str, category: str, test_id: int = None):
         self.title = title
         self.category = category
-        self.id = test_id
+        self.test_id = test_id
 
 
 class User:

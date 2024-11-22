@@ -2,7 +2,7 @@ from service.auth_service import AuthService
 from service.exceptions import UserNotFound, InvalidPassword
 
 
-print(f"Войдите в систему и выберите нужный пункт:")
+print(f"Войдите в систему и сделайте выбор!\n")
 
 
 class Login:
@@ -12,6 +12,7 @@ class Login:
     def user_choice(self):
         login = input("Введите логин: ")
         password = input("Введите пароль: ")
+        print()
         user = None
 
         try:

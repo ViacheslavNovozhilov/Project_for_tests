@@ -11,7 +11,7 @@ class Tests:
         print("Выберите тест:")
         tests = self.service.get_all()
         for i in range(len(tests)):
-            print(f'{i + 1}. {tests[i]}')
+            print(f"{i + 1}. {tests[i]}")
         choice = input()
         return tests[int(choice) - 1]
 

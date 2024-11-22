@@ -53,10 +53,7 @@ class TestsRepository(BaseRepository):
         cursor.execute(correct_answer_query)
         rows = cursor.fetchall()
 
-        correct_answers = []
-        for row in rows:
-            answer = Answer(row[1], row[0])
-            correct_answers.append(answer.answer_id)
+        correct_answers = [row[0] for row in rows]  # Извлекаем только id правильных ответов
         print(correct_answers)
         return correct_answers
 
@@ -131,3 +128,4 @@ class UsersRepository(BaseRepository):
             admin = Admin(row[0], row[1])
             admins.append(admin)
         return admins
+
