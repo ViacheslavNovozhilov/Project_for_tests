@@ -29,6 +29,7 @@ class Test:
 
 
 class User:
+
     user_id: int | None = None
     username: str
     password: str
@@ -39,7 +40,3 @@ class Admin:
         self.user_id = user_id
         self.admin_user_id = admin_user_id
 
-
-class CorrectAnswer:
-    correct_answer_id: int | None = None
-    answer_id: int

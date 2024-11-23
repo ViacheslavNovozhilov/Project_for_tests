@@ -2,7 +2,6 @@ from storage.sqlite_storage import SqliteStorage
 from service.models import Test, Question, Answer, User, Admin
 
 
-
 class BaseRepository:
     def __init__(self, storage: SqliteStorage):
         self.storage = storage
@@ -45,7 +44,7 @@ class TestsRepository(BaseRepository):
     def get_correct_answer(self):
         cursor = self.storage.connection.cursor()
         correct_answer_query = f"""
-        SELECT a.Value, a.AnswerId 
+        SELECT a.AnswerId 
         FROM Answers as a 
         JOIN CorrectAnswers as ca ON a.AnswerId = ca.AnswerId
         JOIN Questions as q ON ca.QuestionId = q.QuestionId
@@ -54,7 +53,6 @@ class TestsRepository(BaseRepository):
         rows = cursor.fetchall()
 
         correct_answers = [row[0] for row in rows]  # Извлекаем только id правильных ответов
-        print(correct_answers)
         return correct_answers
 
     def get_all_test_info(self, test_id: int):
