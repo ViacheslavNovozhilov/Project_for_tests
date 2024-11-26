@@ -30,16 +30,16 @@ def main():
 Нажмите 3, если вы хотите внести изменения (потребуется пароль администратора)
 """))
         if user_input == 1:
-            pass
+            print("Не реализовано")
         elif user_input == 2:
             test = testsInterface.choose_test()
             print(test.test_id)
             user_choice = testsInterface.run_test(test)
             user_result = evaluationService.grade_test(user_choice, test)
             print(f"Вы набрали {user_result} баллов")
-
+            break
         elif user_input == 3:
-            pass
+            print("Не реализовано")
 
 
 if __name__ == '__main__':
