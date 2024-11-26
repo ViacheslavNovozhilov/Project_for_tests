@@ -1,5 +1,5 @@
-from repository import TestsRepository
-from models import *
+from service.repository import TestsRepository
+from service.models import *
 
 
 class EvaluationService:
@@ -12,5 +12,4 @@ class EvaluationService:
         for question in test.questions:
             if question.correct_answer_id == choices[question.question_id]:
                 score += 1
-        print(score)
         return score

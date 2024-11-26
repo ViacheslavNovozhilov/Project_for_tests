@@ -18,6 +18,8 @@ def main():
     authInterface = Login(auth)
     testsInterface = Tests(testsService)
 
+    evaluationService = EvaluationService(testsRepository)
+
 
     while True:
         user = authInterface.user_choice()
@@ -33,6 +35,7 @@ def main():
             test = testsInterface.choose_test()
             print(test.test_id)
             choises = testsInterface.run_test(test)
+            print(f"Вы набрали {evaluationService.grade_test(choises, test)} баллов")
 
         elif user_input == 3:
             pass
