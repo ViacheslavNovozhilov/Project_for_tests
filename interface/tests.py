@@ -13,7 +13,8 @@ class Tests:
         for i in range(len(tests)):
             print(f"{i + 1}. {tests[i]}")
         choice = input()
-        return tests[int(choice) - 1]
+        test = tests[int(choice) - 1]
+        return self.service.collect_test(test)
 
     def run_test(self, raw_test: Test):
         test = self.service.collect_test(raw_test)

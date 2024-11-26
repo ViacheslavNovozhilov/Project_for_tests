@@ -8,9 +8,11 @@ class Answer:
 
 
 class Question:
+    answers = list[Answer]
 
-    def __init__(self, text: str, question_id: int | None = None):
+    def __init__(self, text: str, question_id: int | None = None, correct_answer_id: int | None = None): # подразумевается id правильного ответа
         self.question_id = question_id
+        self.answer_id = correct_answer_id
         self.text = text
 
     def __str__(self):
@@ -18,6 +20,7 @@ class Question:
 
 
 class Test:
+    questions: list[Question]
 
     def __str__(self):
         return self.title

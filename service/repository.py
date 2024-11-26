@@ -86,6 +86,17 @@ class TestsRepository(BaseRepository):
         where qa.QuestionId=
         """
 
+        correct_answer_query = f"""
+        SELECT q.QuestionId, q."Text", t.TestId, t.Title, a.AnswerId, a.Value 
+        From Questions as q
+        join TestsAndQuestions as taq on q.QuestionId = taq.QuestionId
+        join Tests as t on taq.TestId = t.TestId
+        join CorrectAnswers as ca ON q.QuestionId = ca.QuestionId
+        join Answers as a on ca.AnswerId = a.AnswerId 
+        WHERE q.QuestionId = {};
+        """
+        cursor.execute(correct_answer_query)
+
         for question in test.questions:
             raw_answers = cursor.execute(answers_query + str(question.question_id)).fetchall()
             question.answers = []
