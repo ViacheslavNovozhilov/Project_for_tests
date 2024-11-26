@@ -35,7 +35,8 @@ def main():
             test = testsInterface.choose_test()
             print(test.test_id)
             user_choice = testsInterface.run_test(test)
-            print(f"Вы набрали {evaluationService.grade_test(user_choice, test)} баллов")
+            user_result = evaluationService.grade_test(user_choice, test)
+            print(f"Вы набрали {user_result} баллов")
 
         elif user_input == 3:
             pass
