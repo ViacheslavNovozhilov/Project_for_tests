@@ -4,6 +4,7 @@ from service.auth_service import AuthService
 from service.test_service import TestsService
 from interface.authorisation import Login
 from interface.tests import Tests
+from service.evaluation_service import EvaluationService
 
 
 def main():
@@ -16,6 +17,7 @@ def main():
 
     authInterface = Login(auth)
     testsInterface = Tests(testsService)
+
 
     while True:
         user = authInterface.user_choice()
@@ -31,6 +33,7 @@ def main():
             test = testsInterface.choose_test()
             print(test.test_id)
             choises = testsInterface.run_test(test)
+
         elif user_input == 3:
             pass
 

@@ -9,6 +9,7 @@ class Answer:
 
 class Question:
     answers = list[Answer]
+    correct_answer_id = int
 
     def __init__(self, text: str, question_id: int | None = None, correct_answer_id: int | None = None): # подразумевается id правильного ответа
         self.question_id = question_id
